@@ -3,7 +3,7 @@ from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 
-from posts.models import Group, Post, User
+from posts.models import Group, Post
 from .serializers import (CommentSerializer, GroupSerializer, PostSerializer,
                           FollowSerializer)
 from .permissions import IsOwnerOrReadOnly, IsFollowerOrReadOnly
