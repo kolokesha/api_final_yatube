@@ -1,17 +1,8 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, permissions, viewsets
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.viewsets import GenericViewSet
 
 from posts.models import Comment, Group, Post, User, Follow
 
-
-class CreateListViewSet(mixins.CreateModelMixin,
-                        mixins.ListModelMixin,
-                        GenericViewSet):
-    pass
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,6 +32,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('post',)
         model = Comment
 
+
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         slug_field='username',
@@ -63,9 +55,8 @@ class FollowSerializer(serializers.ModelSerializer):
         )
     ]
 
-    def validate_follow(self, data):
+    def validate(self, data):
         if data['following'] == data['user']:
             raise serializers.ValidationError(
-                'Подписка на самого себя невозможна'
-            )
+                'Вы не можете подписаться на себя!')
         return data
